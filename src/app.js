@@ -1,38 +1,47 @@
+// Target id root di index.html
 const root = document.querySelector("#root");
 
 function App() {
-  const [news, setNews] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
+  // Set state with useState buat nampung data yang diinputkan user
+  const [todos, setTodos] = React.useState("");
+  // Set state dengan useState buat generate list yang diinputkan user
+  const [lists, setLists] = React.useState([]);
 
-  React.useEffect(() => {
-    async function fetchData() {
-      const request = await fetch(
-        "https://api.spaceflightnewsapi.net/v3/blogs"
-      );
+  // Function button click menggunakan event handler
+  function handleOnClick(e) {
+    // e.preventDefault() untuk menghindari default behaviour dari button
+    e.preventDefault();
 
-      const response = await request.json();
+    // Set lists dengan menggunakan spread operator untuk menambahkan data yang diinputkan user dan tidak mereplace data yang lama.
+    setLists([...lists, todos]);
 
-      setNews(response);
-      setLoading(false);
-    }
-
-    fetchData();
-  }, []);
+    // Set todos untuk mengosongkan inputan user
+    setTodos("");
+  }
 
   return (
     <>
-      <h1>Data Fetch</h1>
-      {loading ? (
-        <i>Fetching data ...</i>
-      ) : (
-        <ul>
-          {news.map((item) => {
-            return <li key={item.id}>{item.title}</li>;
-          })}
-        </ul>
-      )}
+      <form onSubmit={handleOnClick}>
+        <h1>Simple ToDoList</h1>
+        <input
+          type="text"
+          placeholder="Masukkan aktifitas"
+          value={todos}
+          // onChange digunakan untuk mengupdate state
+          onChange={(e) => setTodos(e.target.value)}
+        />
+        <button>Submit</button>
+      </form>
+
+      <ul>
+        {/* Map untuk mengambil data dari state lists dan menampilkan ke dalam list */}
+        {lists.map((list) => (
+          <li key={list}>{list}</li>
+        ))}
+      </ul>
     </>
   );
 }
 
+// Render ke DOM
 ReactDOM.render(<App />, root);

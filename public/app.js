@@ -1,23 +1,33 @@
+// Target id root di index.html
 const root = document.querySelector("#root");
 
 function App() {
-  const [news, setNews] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  React.useEffect(() => {
-    async function fetchData() {
-      const request = await fetch("https://api.spaceflightnewsapi.net/v3/blogs");
-      const response = await request.json();
-      setNews(response);
-      setLoading(false);
-    }
+  // Set state with useState buat nampung data yang diinputkan user
+  const [todos, setTodos] = React.useState(""); // Set state dengan useState buat generate list yang diinputkan user
 
-    fetchData();
-  }, []);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h1", null, "Data Fetch"), loading ? /*#__PURE__*/React.createElement("i", null, "Fetching data ...") : /*#__PURE__*/React.createElement("ul", null, news.map(item => {
-    return /*#__PURE__*/React.createElement("li", {
-      key: item.id
-    }, item.title);
-  })));
-}
+  const [lists, setLists] = React.useState([]); // Function button click menggunakan event handler
+
+  function handleOnClick(e) {
+    // e.preventDefault() untuk menghindari default behaviour dari button
+    e.preventDefault(); // Set lists dengan menggunakan spread operator untuk menambahkan data yang diinputkan user dan tidak mereplace data yang lama.
+
+    setLists([...lists, todos]); // Set todos untuk mengosongkan inputan user
+
+    setTodos("");
+  }
+
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleOnClick
+  }, /*#__PURE__*/React.createElement("h1", null, "Simple ToDoList"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    placeholder: "Masukkan aktifitas",
+    value: todos // onChange digunakan untuk mengupdate state
+    ,
+    onChange: e => setTodos(e.target.value)
+  }), /*#__PURE__*/React.createElement("button", null, "Submit")), /*#__PURE__*/React.createElement("ul", null, lists.map(list => /*#__PURE__*/React.createElement("li", {
+    key: list
+  }, list))));
+} // Render ke DOM
+
 
 ReactDOM.render( /*#__PURE__*/React.createElement(App, null), root);
