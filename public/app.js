@@ -5,13 +5,21 @@ function App() {
   // Set state with useState buat nampung data yang diinputkan user
   const [todos, setTodos] = React.useState(""); // Set state dengan useState buat generate list yang diinputkan user
 
-  const [lists, setLists] = React.useState([]); // Function button click menggunakan event handler
+  const [lists, setLists] = React.useState([]); // Function untuk membuat id yang unik
+
+  function generateId() {
+    return Date.now();
+  } // Function button click menggunakan event handler
+
 
   function handleOnClick(e) {
     // e.preventDefault() untuk menghindari default behaviour dari button
     e.preventDefault(); // Set lists dengan menggunakan spread operator untuk menambahkan data yang diinputkan user dan tidak mereplace data yang lama.
 
-    setLists([...lists, todos]); // Set todos untuk mengosongkan inputan user
+    setLists([...lists, {
+      id: generateId(),
+      todos: todos
+    }]); // Set todos untuk mengosongkan inputan user
 
     setTodos("");
   }
@@ -25,8 +33,8 @@ function App() {
     ,
     onChange: e => setTodos(e.target.value)
   }), /*#__PURE__*/React.createElement("button", null, "Submit")), /*#__PURE__*/React.createElement("ul", null, lists.map(list => /*#__PURE__*/React.createElement("li", {
-    key: list
-  }, list))));
+    key: list.id
+  }, list.todos))));
 } // Render ke DOM
 
 

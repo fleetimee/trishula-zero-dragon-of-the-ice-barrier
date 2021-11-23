@@ -7,13 +7,24 @@ function App() {
   // Set state dengan useState buat generate list yang diinputkan user
   const [lists, setLists] = React.useState([]);
 
+  // Function untuk membuat id yang unik
+  function generateId() {
+    return Date.now();
+  }
+
   // Function button click menggunakan event handler
   function handleOnClick(e) {
     // e.preventDefault() untuk menghindari default behaviour dari button
     e.preventDefault();
 
     // Set lists dengan menggunakan spread operator untuk menambahkan data yang diinputkan user dan tidak mereplace data yang lama.
-    setLists([...lists, todos]);
+    setLists([
+      ...lists,
+      {
+        id: generateId(),
+        todos: todos,
+      },
+    ]);
 
     // Set todos untuk mengosongkan inputan user
     setTodos("");
@@ -36,7 +47,7 @@ function App() {
       <ul>
         {/* Map untuk mengambil data dari state lists dan menampilkan ke dalam list */}
         {lists.map((list) => (
-          <li key={list}>{list}</li>
+          <li key={list.id}>{list.todos}</li>
         ))}
       </ul>
     </>
